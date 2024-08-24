@@ -6,13 +6,13 @@ echo "Contents of current directory:"
 ls -la
 
 echo "Python version:"
-python --version
+python3 --version
 
 echo "Pip version:"
-pip --version
+pip3 --version
 
 echo "Installed packages:"
-pip list
+pip3 list
 
 echo "Starting Flask app..."
-python app.py
+python3 app.py

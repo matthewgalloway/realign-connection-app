@@ -12,15 +12,15 @@ RUN yarn build
 FROM python:3.8-slim
 WORKDIR /app
 
-# Install Nginx
-RUN apt-get update && apt-get install -y nginx
-
-# Copy frontend build
-COPY --from=frontend-build /app/dist /usr/share/nginx/html
+# Install system dependencies
+RUN apt-get update && apt-get install -y nginx curl
 
 # Install Python dependencies
 COPY backend/requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy frontend build
+COPY --from=frontend-build /app/dist /usr/share/nginx/html
 
 # Copy backend
 COPY backend .
@@ -29,8 +29,7 @@ COPY backend .
 COPY start.sh /app/start.sh
 COPY Procfile /app/Procfile
 
-# Set correct permissions and ownership
-RUN chown -R www-data:www-data /app
+# Set correct permissions
 RUN chmod +x /app/start.sh
 
 # Expose ports

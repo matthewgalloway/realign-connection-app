@@ -16,14 +16,14 @@ RUN pip install -r requirements.txt
 COPY backend .
 
 # Stage 3: Production stage
-FROM nginx:stable-alpine
+FROM python:3.8-slim
 WORKDIR /app
+
+# Install Nginx
+RUN apt-get update && apt-get install -y nginx
 
 # Copy frontend build
 COPY --from=frontend-build /app/dist /usr/share/nginx/html
-
-# Install Python and pip
-RUN apk add --no-cache python3 py3-pip
 
 # Create a virtual environment
 ENV VIRTUAL_ENV=/opt/venv
@@ -39,15 +39,14 @@ COPY start.sh /app/start.sh
 COPY Procfile /app/Procfile
 
 # Set correct permissions and ownership
-RUN chown -R nginx:nginx /app
+RUN chown -R www-data:www-data /app
 RUN chmod +x /app/start.sh
-RUN ls -l /app/start.sh  # Check permissions
 
 # Expose ports
 EXPOSE 80 5000
 
-# Switch to nginx user
-USER nginx
+# Switch to www-data user
+USER www-data
 
 # Use the start script as the command
-CMD ["/app/start.sh"]
+CMD ["/bin/bash", "/app/start.sh"]  

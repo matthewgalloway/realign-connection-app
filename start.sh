@@ -9,11 +9,14 @@ echo "Python version:"
 python3 --version
 
 echo "Pip version:"
-pip3 --version
+python3 -m pip --version
 
 echo "Installed packages:"
-pip3 list
+python3 -m pip list
+
+echo "Python path:"
+echo $PYTHONPATH
 
 echo "Starting Flask app..."
 cd /workspace/backend
-python3 app.py
+python3 -m flask run --host=0.0.0.0 --port=5000

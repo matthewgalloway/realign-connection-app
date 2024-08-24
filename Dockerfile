@@ -34,12 +34,13 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 COPY --from=backend-build /app /app/backend
 RUN pip install -r /app/backend/requirements.txt
 
-# Copy the start script
+# Copy the start script and Procfile
 COPY start.sh /app/start.sh
+COPY Procfile /app/Procfile
 RUN chmod +x /app/start.sh
 
 # Expose ports
 EXPOSE 80 5000
 
-# Start Nginx and Flask
-CMD ["/app/start.sh"]
+# Use the start script as the entry point
+ENTRYPOINT ["/app/start.sh"]

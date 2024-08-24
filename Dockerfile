@@ -8,14 +8,7 @@ ARG VUE_APP_API_URL
 ENV VUE_APP_API_URL=${VUE_APP_API_URL}
 RUN yarn build
 
-# Stage 2: Setup backend
-FROM python:3.8-slim as backend-build
-WORKDIR /app
-COPY backend/requirements.txt .
-RUN pip install -r requirements.txt
-COPY backend .
-
-# Stage 3: Production stage
+# Stage 2: Setup backend and production stage
 FROM python:3.8-slim
 WORKDIR /app
 
@@ -25,14 +18,12 @@ RUN apt-get update && apt-get install -y nginx
 # Copy frontend build
 COPY --from=frontend-build /app/dist /usr/share/nginx/html
 
-# Create a virtual environment
-ENV VIRTUAL_ENV=/opt/venv
-RUN python3 -m venv $VIRTUAL_ENV
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+# Install Python dependencies
+COPY backend/requirements.txt .
+RUN pip install -r requirements.txt
 
-# Copy backend and install requirements
-COPY --from=backend-build /app /app/backend
-RUN pip install -r /app/backend/requirements.txt
+# Copy backend
+COPY backend .
 
 # Copy the start script and Procfile
 COPY start.sh /app/start.sh
@@ -45,8 +36,5 @@ RUN chmod +x /app/start.sh
 # Expose ports
 EXPOSE 80 5000
 
-# Switch to www-data user
-USER www-data
-
 # Use the start script as the command
-CMD ["/bin/bash", "/app/start.sh"]  
+CMD ["/bin/bash", "/app/start.sh"]

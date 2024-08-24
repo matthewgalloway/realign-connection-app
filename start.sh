@@ -1,4 +1,5 @@
 #!/bin/bash
+
 echo "Current user: $(whoami)"
 echo "Current directory: $(pwd)"
 echo "Contents of /app:"
@@ -7,9 +8,8 @@ echo "Permissions of start.sh:"
 ls -l /app/start.sh
 
 # Start Nginx
-sudo nginx -g "daemon off;" &
+nginx -g "daemon off;" &
 
-# Activate virtual environment and start Flask app
-source /opt/venv/bin/activate
-cd /app/backend
+# Start Flask app
+cd /app
 flask run --host=0.0.0.0

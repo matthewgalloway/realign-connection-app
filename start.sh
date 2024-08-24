@@ -1,21 +1,5 @@
-#!/bin/bash
-
-echo "Current user: $(whoami)"
-echo "Current directory: $(pwd)"
-echo "Contents of current directory:"
-ls -la
-
-echo "Python version:"
-python3 --version
-
-echo "Python executable location:"
-which python3
-
 echo "Pip version:"
 python3 -m pip --version
-
-echo "Pip executable location:"
-which pip3
 
 echo "Installed packages:"
 python3 -m pip list

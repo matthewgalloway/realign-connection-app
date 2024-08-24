@@ -9,24 +9,18 @@ ENV VUE_APP_API_URL=${VUE_APP_API_URL}
 RUN yarn build
 
 # Stage 2: Setup backend and production stage
-FROM ubuntu:20.04
+FROM python:3.10-slim
 WORKDIR /workspace
 
-# Set environment variables
-ENV DEBIAN_FRONTEND=noninteractive
-ENV PYTHONUNBUFFERED=1
-ENV PATH="/usr/local/bin:${PATH}"
-
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
-    python3 \
-    python3-pip \
-    python3-dev \
-    nginx \
-    curl
+RUN apt-get update && apt-get install -y curl
 
-# Upgrade pip
-RUN python3 -m pip install --no-cache-dir --upgrade pip
+# Ensure pip is installed and updated
+RUN apt-get install -y python3-pip
+RUN python3 -m pip install --no-cache-dir --upgrade pip setuptools wheel
+
+# Install Flask
+RUN python3 -m pip install --no-cache-dir flask
 
 # Install Python dependencies
 COPY backend/requirements.txt /workspace/backend/
@@ -41,18 +35,3 @@ COPY backend /workspace/backend
 # Copy the start script and Procfile
 COPY start.sh /workspace/start.sh
 COPY Procfile /workspace/Procfile
-
-# Copy other necessary files
-COPY package.json yarn.lock /workspace/
-
-# Set correct permissions
-RUN chmod +x /workspace/start.sh
-
-# Expose ports
-EXPOSE 80 5000
-
-# Set Python path
-ENV PYTHONPATH=/workspace/backend
-
-# Use the start script as the command
-CMD ["/bin/bash", "/workspace/start.sh"]

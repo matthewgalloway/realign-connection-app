@@ -2,27 +2,17 @@
 
 echo "Current user: $(whoami)"
 echo "Current directory: $(pwd)"
-echo "Contents of /app:"
-ls -la /app
-echo "Permissions of start.sh:"
-ls -l /app/start.sh
+echo "Contents of current directory:"
+ls -la
 
-# Check if nginx is installed
-if command -v nginx &> /dev/null
-then
-    echo "nginx is installed"
-    nginx -g "daemon off;" &
-else
-    echo "nginx is not installed"
-fi
+echo "Python version:"
+python --version
 
-# Check if flask is installed
-if command -v flask &> /dev/null
-then
-    echo "flask is installed"
-    cd /app
-    flask run --host=0.0.0.0
-else
-    echo "flask is not installed"
-    pip list
-fi
+echo "Pip version:"
+pip --version
+
+echo "Installed packages:"
+pip list
+
+echo "Starting Flask app..."
+python app.py

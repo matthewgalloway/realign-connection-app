@@ -38,11 +38,16 @@ RUN pip install -r /app/backend/requirements.txt
 COPY start.sh /app/start.sh
 COPY Procfile /app/Procfile
 
-# Set correct permissions for start.sh
+# Set correct permissions and ownership
+RUN chown -R nginx:nginx /app
 RUN chmod +x /app/start.sh
+RUN ls -l /app/start.sh  # Check permissions
 
 # Expose ports
 EXPOSE 80 5000
 
-# Use the start script as the entry point
-ENTRYPOINT ["/app/start.sh"]
+# Switch to nginx user
+USER nginx
+
+# Use the start script as the command
+CMD ["/app/start.sh"]

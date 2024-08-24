@@ -37,6 +37,8 @@ RUN pip install -r /app/backend/requirements.txt
 # Copy the start script and Procfile
 COPY start.sh /app/start.sh
 COPY Procfile /app/Procfile
+
+# Set correct permissions for start.sh
 RUN chmod +x /app/start.sh
 
 # Expose ports

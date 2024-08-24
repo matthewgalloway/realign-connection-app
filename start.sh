@@ -8,14 +8,29 @@ ls -la
 echo "Python version:"
 python3 --version
 
+echo "Python executable location:"
+which python3
+
 echo "Pip version:"
 python3 -m pip --version
+
+echo "Pip executable location:"
+which pip3
 
 echo "Installed packages:"
 python3 -m pip list
 
 echo "Python path:"
 echo $PYTHONPATH
+
+echo "System PATH:"
+echo $PATH
+
+echo "Contents of /usr/local/bin:"
+ls -la /usr/local/bin
+
+echo "Contents of /usr/bin:"
+ls -la /usr/bin | grep python
 
 echo "Starting Flask app..."
 cd /workspace/backend

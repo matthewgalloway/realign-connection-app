@@ -15,5 +15,5 @@ echo "Installed packages:"
 pip3 list
 
 echo "Starting Flask app..."
-cd /app/backend
+cd /workspace/backend
 python3 app.py

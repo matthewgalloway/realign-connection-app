@@ -9,21 +9,24 @@ ENV VUE_APP_API_URL=${VUE_APP_API_URL}
 RUN yarn build
 
 # Stage 2: Setup backend and production stage
-FROM python:3.8-slim
+FROM python:3.10-slim
+RUN apt-get update && apt-get install -y python3-pip
+RUN pip3 install --upgrade pip
 WORKDIR /app
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y nginx curl
 
 # Install Python dependencies
-COPY backend/requirements.txt .
-RUN pip3 install --no-cache-dir -r requirements.txt
+COPY backend/requirements.txt /app/backend/
+RUN pip3 install --no-cache-dir -r /app/backend/requirements.txt
+
 
 # Copy frontend build
-COPY --from=frontend-build /app/dist /usr/share/nginx/html
+COPY --from=frontend-build /app/frontend/dist /app/frontend/dist
 
 # Copy backend
-COPY backend .
+COPY backend /app/backend
 
 # Copy the start script and Procfile
 COPY start.sh /app/start.sh

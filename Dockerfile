@@ -42,4 +42,4 @@ RUN chmod +x /app/start.sh
 EXPOSE 80 5000
 
 # Start Nginx and Flask
-CMD ["/bin/sh", "/app/start.sh"]
+CMD ["/app/start.sh"]

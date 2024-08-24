@@ -1,10 +1,7 @@
 #!/bin/bash
-echo "Current user: $(whoami)"
+echo "Start script is running"
 echo "Current directory: $(pwd)"
-echo "Contents of /app:"
-ls -la /app
-echo "Permissions of start.sh:"
-ls -l /app/start.sh
-
-nginx -g "daemon off;" &
-. /opt/venv/bin/activate && cd /app/backend && /opt/venv/bin/flask run --host=0.0.0.0
+echo "Contents of current directory:"
+ls -la
+# Keep the container running
+tail -f /dev/null

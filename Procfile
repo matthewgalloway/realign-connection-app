@@ -1,1 +1,1 @@
-web: echo "Hello, World!"
+web: /app/start.sh
